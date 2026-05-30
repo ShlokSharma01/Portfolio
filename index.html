@@ -20,26 +20,44 @@
     <meta name="twitter:description" content="Developer · Data Analyst · Designer" />
     <meta name="twitter:image"       content="/og-image.png" />
 
-    <!-- Preconnect for fonts -->
+    <!-- Preconnect: start TCP/TLS early for font CDNs -->
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Clash Display (Fontshare) -->
-    <link
+    <!--
+      Fonts loaded ASYNCHRONOUSLY to eliminate render-blocking.
+      Pattern: rel="preload" as="style" → swap to stylesheet via onload.
+      noscript fallback ensures fonts still load without JS.
+      font-display:swap (appended by both CDNs) prevents invisible text.
+    -->
+
+    <!-- Clash Display (Fontshare) — async -->
+    <link rel="preload" as="style"
       href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Satoshi (Fontshare) -->
-    <link
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet"
+        href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" />
+    </noscript>
+
+    <!-- Satoshi (Fontshare) — async -->
+    <link rel="preload" as="style"
       href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- JetBrains Mono (Google Fonts) -->
-    <link
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet"
+        href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" />
+    </noscript>
+
+    <!-- JetBrains Mono (Google Fonts) — async -->
+    <link rel="preload" as="style"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+      <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" />
+    </noscript>
 
     <title>Shlok Sharma — Portfolio</title>
   </head>
