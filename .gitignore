@@ -39,3 +39,5 @@ Portfolio_Build_Brief.md
 .dev-server.log
 .screenshot*.mjs
 screenshots/
+
+lighthouse-report.json
