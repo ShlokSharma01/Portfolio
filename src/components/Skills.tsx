@@ -104,7 +104,7 @@ export default function Skills() {
     >
       {/* ── Texture (mirrored) ───────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: 'url(/textures/bg-2.png)', backgroundSize: 'cover', transform: 'scaleX(-1)', opacity: 0.04, mixBlendMode: 'screen' }} />
+        style={{ backgroundImage: 'url(/textures/bg-2.webp)', backgroundSize: 'cover', transform: 'scaleX(-1)', opacity: 0.04, mixBlendMode: 'screen' }} />
 
       {/* ── Atmosphere ───────────────────────────────────────────── */}
       <div aria-hidden="true" className="section-glow section-glow-2 absolute"

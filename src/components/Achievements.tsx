@@ -63,7 +63,7 @@ export default function Achievements() {
     >
       {/* ── Texture ──────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: 'url(/textures/bg-1.png)', backgroundSize: 'cover', opacity: 0.04, mixBlendMode: 'screen' }} />
+        style={{ backgroundImage: 'url(/textures/bg-1.webp)', backgroundSize: 'cover', opacity: 0.04, mixBlendMode: 'screen' }} />
 
       {/* ── Atmosphere ───────────────────────────────────────────── */}
       <div aria-hidden="true" className="section-glow section-glow-1 absolute"

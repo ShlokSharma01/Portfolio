@@ -41,7 +41,7 @@ export default function About() {
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'url(/textures/bg-1.png)',
+          backgroundImage: 'url(/textures/bg-1.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.055,
@@ -89,9 +89,12 @@ export default function About() {
           }}
         />
         <img
-          src="/about-abstract.png"
+          src="/about-abstract.webp"
           alt=""
+          width={1045}
+          height={1400}
           loading="lazy"
+          decoding="async"
           className="w-full h-full"
           style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.22, filter: 'saturate(0.4) brightness(0.75)' }}
         />

@@ -60,7 +60,10 @@ function FeatureCard({ project }: { project: Project }) {
             ref={imgRef}
             src={project.image}
             alt={project.title}
+            width={1000}
+            height={490}
             loading="lazy"
+            decoding="async"
             className="w-full h-full absolute inset-0"
             style={{ objectFit: 'cover', transition: 'transform 0.55s ease' }}
             onError={e => { (e.currentTarget as HTMLImageElement).src = project.fallbackImage; }}
@@ -191,7 +194,10 @@ function RegularCard({ project, cardIndex }: { project: Project; cardIndex: numb
               ref={imgRef}
               src={project.image}
               alt={project.title}
+              width={1000}
+              height={490}
               loading="lazy"
+              decoding="async"
               className="w-full h-full"
               style={{ objectFit: 'cover', transition: 'transform 0.55s ease' }}
               onError={e => { (e.currentTarget as HTMLImageElement).src = project.fallbackImage; }}
@@ -293,7 +299,7 @@ export default function Projects() {
     >
       {/* ── Texture ──────────────────────────────────────────────── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ backgroundImage: 'url(/textures/bg-1.png)', backgroundSize: 'cover', opacity: 0.04, mixBlendMode: 'screen' }} />
+        style={{ backgroundImage: 'url(/textures/bg-1.webp)', backgroundSize: 'cover', opacity: 0.04, mixBlendMode: 'screen' }} />
 
       {/* ── Atmosphere glow ──────────────────────────────────────── */}
       <div aria-hidden="true" className="section-glow section-glow-1 absolute"

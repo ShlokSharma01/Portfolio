@@ -17,8 +17,8 @@ export const projects: Project[] = [
     tech: ['React', 'Node', 'Express', 'MongoDB', 'Socket.io', 'JWT', 'Razorpay', 'Framer Motion'],
     repo: 'https://github.com/ShlokSharma01/Hotel-OS',
     live: 'https://hotel-os-rpvw.vercel.app/',
-    image: '/projects/hotel-os.png',
-    fallbackImage: '/about-abstract.png',
+    image: '/projects/hotel-os.webp',
+    fallbackImage: '/about-abstract.webp',
   },
   {
     id: 'asl',
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/ShlokSharma01/ASL-Fingerspelling',
     live: null,
     image: '/projects/asl.png',
-    fallbackImage: '/about-abstract.png',
+    fallbackImage: '/about-abstract.webp',
   },
   {
     id: 'scheduling',
@@ -39,6 +39,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/ShlokSharma01',
     live: null,
     image: '/projects/scheduling.png',
-    fallbackImage: '/about-abstract.png',
+    fallbackImage: '/about-abstract.webp',
   },
 ];

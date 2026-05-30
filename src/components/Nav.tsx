@@ -51,6 +51,7 @@ export default function Nav() {
             alt="SS"
             width={38}
             height={38}
+            decoding="async"
             className="rounded-md"
             style={{ filter: 'drop-shadow(0 0 8px rgba(225,14,31,0.5))' }}
           />

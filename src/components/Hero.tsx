@@ -106,7 +106,7 @@ export default function Hero() {
             className="w-full h-full"
             style={{ objectFit: 'cover', objectPosition: 'center' }}
             autoPlay muted loop playsInline preload="metadata"
-            poster="/hero-poster.png"
+            poster="/hero-poster.webp"
           >
             <source src="/hero.webm" type="video/webm" />
             <source src="/hero.mp4"  type="video/mp4"  />
@@ -115,7 +115,7 @@ export default function Hero() {
       ) : (
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/hero-poster.png)' }}
+          style={{ backgroundImage: 'url(/hero-poster.webp)' }}
           aria-hidden="true"
         />
       )}

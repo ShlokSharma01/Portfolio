@@ -63,7 +63,7 @@ export default function Experience() {
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'url(/textures/bg-2.png)',
+          backgroundImage: 'url(/textures/bg-2.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           transform: 'scaleX(-1)',
