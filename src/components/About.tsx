@@ -1,10 +1,13 @@
 import { useRef, useEffect } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { gsap } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
 
+  /* ── GSAP stagger entrance (unchanged) ─────────────────────── */
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
@@ -24,6 +27,23 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
+  /* ── Scroll parallax — image drifts slower than text ────────── */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // Image: shallow drift — feels further back
+  const imgY = useTransform(
+    scrollYProgress, [0, 1],
+    reducedMotion ? [0, 0] : [18, -28],
+  );
+  // Text: deeper drift — feels closer to viewer
+  const textY = useTransform(
+    scrollYProgress, [0, 1],
+    reducedMotion ? [0, 0] : [0, -52],
+  );
+
   return (
     <section
       ref={sectionRef}
@@ -36,27 +56,58 @@ export default function About() {
         paddingBottom: 'clamp(6rem, 12vw, 10rem)',
       }}
     >
-      {/* ── Texture overlay ──────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════
+          GRADIENT MESH — 3 blobs, pure CSS, no filter:blur.
+          Each blob is a large soft radial-gradient div that
+          animates only via transform (GPU composited).
+          ════════════════════════════════════════════════════════ */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: 'url(/textures/bg-1.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.055,
-          mixBlendMode: 'screen',
-        }}
-      />
+        className="absolute inset-0 pointer-events-none overflow-hidden"
+        style={{ zIndex: 0 }}
+      >
+        {/* Blob A — large warm crimson, right / top (behind image zone) */}
+        <div
+          className="mesh-blob absolute"
+          style={{
+            width: '80vw', height: '80vw',
+            borderRadius: '50%',
+            right: '-20%', top: '-15%',
+            background:
+              'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(225,14,31,0.13) 0%, rgba(122,10,18,0.06) 45%, transparent 70%)',
+            animation: 'mesh-a 24s ease-in-out infinite',
+            willChange: 'transform',
+          }}
+        />
+        {/* Blob B — medium deep crimson, bottom-left */}
+        <div
+          className="mesh-blob absolute"
+          style={{
+            width: '55vw', height: '55vw',
+            borderRadius: '50%',
+            left: '-8%', bottom: '-18%',
+            background:
+              'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(122,10,18,0.11) 0%, transparent 65%)',
+            animation: 'mesh-b 30s ease-in-out infinite',
+            willChange: 'transform',
+          }}
+        />
+        {/* Blob C — small gold accent, centre-right */}
+        <div
+          className="mesh-blob absolute"
+          style={{
+            width: '38vw', height: '38vw',
+            borderRadius: '50%',
+            right: '18%', bottom: '12%',
+            background:
+              'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212,175,55,0.055) 0%, transparent 60%)',
+            animation: 'mesh-c 40s ease-in-out infinite',
+            willChange: 'transform',
+          }}
+        />
+      </div>
 
-      {/* ── Drifting crimson atmosphere ───────────────────────────── */}
-      <div
-        aria-hidden="true"
-        className="section-glow section-glow-1 absolute"
-        style={{ width: '45vw', height: '45vw', right: '8%', top: '15%', opacity: 0.16 }}
-      />
-
-      {/* ── Ghost index number ────────────────────────────────────── */}
+      {/* ── Ghost index number ──────────────────────────────────── */}
       <div
         aria-hidden="true"
         className="absolute font-display font-bold select-none pointer-events-none"
@@ -65,7 +116,7 @@ export default function About() {
           lineHeight: 1,
           letterSpacing: '-0.04em',
           color: 'var(--text)',
-          opacity: 0.035,
+          opacity: 0.032,
           top: '-1.5rem',
           right: '2rem',
           zIndex: 0,
@@ -74,13 +125,12 @@ export default function About() {
         01
       </div>
 
-      {/* ── Abstract image — bleeds in from right behind headline ── */}
-      <div
+      {/* ── Abstract image — parallax (slower) ─────────────────── */}
+      <motion.div
         aria-hidden="true"
         className="absolute hidden md:block pointer-events-none"
-        style={{ right: '-4%', top: 0, bottom: 0, width: '58%', zIndex: 1 }}
+        style={{ right: '-4%', top: 0, bottom: 0, width: '58%', zIndex: 1, y: imgY }}
       >
-        {/* Left-edge gradient so text stays legible */}
         <div
           className="absolute inset-y-0 left-0 w-1/2 pointer-events-none"
           style={{
@@ -96,20 +146,25 @@ export default function About() {
           loading="lazy"
           decoding="async"
           className="w-full h-full"
-          style={{ objectFit: 'cover', objectPosition: 'center', opacity: 0.22, filter: 'saturate(0.4) brightness(0.75)' }}
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+            opacity: 0.22,
+            filter: 'saturate(0.4) brightness(0.75)',
+          }}
         />
-      </div>
+      </motion.div>
 
-      {/* ── Content ──────────────────────────────────────────────── */}
-      <div
+      {/* ── Content — parallax (faster, feels closer) ──────────── */}
+      <motion.div
         className="relative px-6 md:px-14 lg:px-20 max-w-7xl mx-auto"
-        style={{ zIndex: 3 }}
+        style={{ zIndex: 3, y: textY }}
       >
         <div data-ar>
           <SectionLabel number="01" label="About" />
         </div>
 
-        {/* Editorial headline — spans wide, overlaps image zone on desktop */}
+        {/* Editorial headline */}
         <h2
           data-ar
           className="font-display font-bold uppercase"
@@ -125,12 +180,20 @@ export default function About() {
           I BUILD<br />
           TECHNOLOGY<br />
           THAT{' '}
-          <em style={{ color: 'var(--crimson)', fontStyle: 'italic' }}>
+          {/* Crimson emphasis word with glow */}
+          <em
+            style={{
+              color: 'var(--crimson)',
+              fontStyle: 'italic',
+              textShadow:
+                '0 0 28px rgba(225,14,31,0.55), 0 0 70px rgba(225,14,31,0.18)',
+            }}
+          >
             MATTERS.
           </em>
         </h2>
 
-        {/* Bio — constrained to left column */}
+        {/* Bio */}
         <div style={{ maxWidth: '52ch' }}>
           <p
             data-ar
@@ -138,9 +201,21 @@ export default function About() {
             style={{ color: 'var(--text)' }}
           >
             Third-year B.Tech CSE student at{' '}
-            <span style={{ color: 'var(--crimson)' }}>Sharda University</span>,
-            Greater Noida. Currently a{' '}
-            <span style={{ color: 'var(--crimson)' }}>
+            <span
+              style={{
+                color: 'var(--crimson)',
+                textShadow: '0 0 18px rgba(225,14,31,0.35)',
+              }}
+            >
+              Sharda University
+            </span>
+            , Greater Noida. Currently a{' '}
+            <span
+              style={{
+                color: 'var(--crimson)',
+                textShadow: '0 0 18px rgba(225,14,31,0.35)',
+              }}
+            >
               Web Systems Engineer &amp; Data Analyst
             </span>{' '}
             at Coppersmith Creations (UK).
@@ -176,14 +251,18 @@ export default function About() {
               </p>
               <p
                 className="font-display font-bold text-2xl"
-                style={{ color: 'var(--crimson)', letterSpacing: '-0.01em' }}
+                style={{
+                  color: 'var(--crimson)',
+                  letterSpacing: '-0.01em',
+                  textShadow: '0 0 16px rgba(225,14,31,0.3)',
+                }}
               >
                 {value}
               </p>
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

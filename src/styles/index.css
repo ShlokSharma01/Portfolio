@@ -119,6 +119,31 @@ body::after {
 }
 
 /* ============================================================
+   GRADIENT MESH BLOBS — 4-stop keyframes, transform only, GPU-composited
+   No filter:blur. Soft radial-gradients naturally diffuse without it.
+   ============================================================ */
+@keyframes mesh-a {
+  0%,100% { transform: translate(0,    0)    scale(1);    }
+  25%     { transform: translate(52px,-36px) scale(1.08); }
+  50%     { transform: translate(14px, 44px) scale(0.94); }
+  75%     { transform: translate(-32px,-18px) scale(1.04); }
+}
+@keyframes mesh-b {
+  0%,100% { transform: translate(0,    0)    scale(1);    }
+  30%     { transform: translate(-58px,26px) scale(1.11); }
+  60%     { transform: translate(28px,-52px) scale(0.91); }
+  80%     { transform: translate(10px, 30px) scale(1.03); }
+}
+@keyframes mesh-c {
+  0%,100% { transform: translate(0, 0) rotate(0deg)   scale(1);    }
+  50%     { transform: translate(22px,18px) rotate(180deg) scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-blob { animation: none !important; }
+}
+
+/* ============================================================
    SECTION ATMOSPHERE — drifting crimson glow (transform+opacity only)
    ============================================================ */
 @keyframes drift-1 {
