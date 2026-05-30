@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import SectionLabel from './ui/SectionLabel';
 
 const socials = [
@@ -41,13 +42,71 @@ const socials = [
 ];
 
 export default function Contact() {
+  const sectionRef  = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  /* ── Subtle scroll parallax on the headline block ──────────── */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const headlineY = useTransform(
+    scrollYProgress, [0, 1],
+    reducedMotion ? [0, 0] : [18, -28],
+  );
+
   return (
     <section
+      ref={sectionRef}
       id="contact"
-      style={{ background: 'var(--bg-elev)', scrollMarginTop: '80px' }}
-      className="py-28 md:py-36 px-6 md:px-14 lg:px-20"
+      className="relative overflow-hidden"
+      style={{
+        background: 'var(--bg-elev)',
+        scrollMarginTop: '80px',
+        paddingTop:    'clamp(6rem, 12vw, 10rem)',
+        paddingBottom: 'clamp(6rem, 12vw, 10rem)',
+        paddingLeft:   'clamp(1.5rem, 3.5vw, 5rem)',
+        paddingRight:  'clamp(1.5rem, 3.5vw, 5rem)',
+      }}
     >
-      <div className="max-w-3xl mx-auto text-center">
+      {/* ════ Gradient mesh — pure CSS ════ */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+        {/* Central headline glow — largest, directly behind text */}
+        <div className="mesh-blob absolute" style={{
+          width: '70vw', height: '70vw', borderRadius: '50%',
+          left: '50%', top: '15%',
+          transform: 'translateX(-50%)',
+          background:
+            'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(225,14,31,0.16) 0%, rgba(122,10,18,0.07) 40%, transparent 70%)',
+          animation: 'mesh-a 24s ease-in-out infinite', willChange: 'transform',
+        }} />
+        {/* Flanking accent — lower left */}
+        <div className="mesh-blob absolute" style={{
+          width: '45vw', height: '45vw', borderRadius: '50%',
+          left: '-8%', bottom: '5%',
+          background:
+            'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(122,10,18,0.11) 0%, transparent 65%)',
+          animation: 'mesh-b 30s ease-in-out infinite reverse', willChange: 'transform',
+        }} />
+        {/* Gold shimmer — upper right */}
+        <div className="mesh-blob absolute" style={{
+          width: '32vw', height: '32vw', borderRadius: '50%',
+          right: '-5%', top: '10%',
+          background:
+            'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212,175,55,0.055) 0%, transparent 60%)',
+          animation: 'mesh-c 38s ease-in-out infinite', willChange: 'transform',
+        }} />
+      </div>
+
+      {/* Ghost index */}
+      <div aria-hidden="true" className="absolute font-display font-bold select-none pointer-events-none"
+        style={{ fontSize: 'clamp(9rem, 22vw, 18rem)', lineHeight: 1, letterSpacing: '-0.04em', color: 'var(--text)', opacity: 0.025, top: '-1rem', right: '1rem', zIndex: 0 }}>
+        06
+      </div>
+
+      {/* ── Content ──────────────────────────────────────────────── */}
+      <div className="relative max-w-3xl mx-auto text-center" style={{ zIndex: 2 }}>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,35 +117,43 @@ export default function Contact() {
           <SectionLabel number="06" label="Contact" />
         </motion.div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, delay: 0.1 }}
-          className="font-display font-bold uppercase mt-4 mb-4"
-          style={{
-            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            letterSpacing: '-0.02em',
-            lineHeight: '0.92',
-            color: 'var(--text)',
-            textShadow: '0 0 50px rgba(225,14,31,0.2)',
-          }}
-        >
-          Let's Build<br />
-          <span style={{ color: 'var(--crimson)' }}>Something.</span>
-        </motion.h2>
+        {/* Headline with scroll parallax */}
+        <motion.div style={{ y: headlineY }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.75, delay: 0.1 }}
+            className="font-display font-bold uppercase mt-4 mb-4"
+            style={{
+              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+              letterSpacing: '-0.02em',
+              lineHeight: '0.92',
+              color: 'var(--text)',
+              textShadow: '0 0 60px rgba(225,14,31,0.22)',
+            }}
+          >
+            Let's Build<br />
+            <span style={{
+              color: 'var(--crimson)',
+              textShadow: '0 0 30px rgba(225,14,31,0.6), 0 0 80px rgba(225,14,31,0.2)',
+            }}>
+              Something.
+            </span>
+          </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="font-body text-base leading-relaxed mb-10"
-          style={{ color: 'var(--text-muted)' }}
-        >
-          Open to collaborations, internships, and projects that push boundaries.
-          Drop an email or find me on any of the platforms below.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="font-body text-base leading-relaxed mb-10"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            Open to collaborations, internships, and projects that push boundaries.
+            Drop an email or find me on any of the platforms below.
+          </motion.p>
+        </motion.div>
 
         {/* Glass card */}
         <motion.div
@@ -95,29 +162,27 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.25 }}
           className="rounded-2xl p-8 md:p-10"
-          style={{
-            background: 'var(--card-bg)',
-            border: '1px solid var(--line)',
-          }}
+          style={{ background: 'var(--card-bg)', border: '1px solid var(--line)' }}
         >
           {/* Email CTA */}
           <a
             href="mailto:shlok.spc83@gmail.com"
-            className="inline-flex items-center gap-3 font-mono text-sm tracking-[0.15em] uppercase px-7 py-3.5 rounded-lg mb-8 transition-all duration-250"
+            className="inline-flex items-center gap-3 font-mono text-sm tracking-[0.15em] uppercase px-7 py-3.5 rounded-lg mb-8"
             style={{
               background: 'var(--crimson)',
               color: '#fff',
               border: '1px solid var(--crimson-glow)',
               boxShadow: '0 0 28px rgba(225,14,31,0.35)',
+              transition: 'box-shadow 0.25s ease',
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 44px rgba(225,14,31,0.55)'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(225,14,31,0.35)'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 48px rgba(225,14,31,0.6)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(225,14,31,0.35)'; }}
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             shlok.spc83@gmail.com
           </a>
 
-          {/* Social row */}
+          {/* Socials */}
           <div className="flex flex-wrap justify-center gap-3">
             {socials.map(({ label, href, icon }) => (
               <motion.a
@@ -147,10 +212,10 @@ export default function Contact() {
             <a
               href="/resume.pdf"
               download
-              className="font-mono text-xs tracking-[0.2em] uppercase inline-flex items-center gap-2 transition-colors duration-200"
-              style={{ color: 'var(--gold)' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.75'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+              className="font-mono text-xs tracking-[0.2em] uppercase inline-flex items-center gap-2"
+              style={{ color: 'var(--gold)', transition: 'opacity 0.2s' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.75'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Résumé
@@ -165,13 +230,11 @@ export default function Contact() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, delay: 0.4 }}
-        className="mt-20 text-center"
+        className="mt-20 text-center relative"
+        style={{ zIndex: 2 }}
       >
         <div className="h-px w-24 mx-auto mb-6" style={{ background: 'var(--line)' }} />
-        <p
-          className="font-mono text-[0.62rem] tracking-[0.25em] uppercase"
-          style={{ color: 'var(--text-muted)' }}
-        >
+        <p className="font-mono text-[0.62rem] tracking-[0.25em] uppercase" style={{ color: 'var(--text-muted)' }}>
           © 2026 Shlok Sharma
         </p>
       </motion.footer>
