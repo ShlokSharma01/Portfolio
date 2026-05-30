@@ -32,6 +32,9 @@ yarn-error.log*
 # Claude Code local settings
 .claude/
 
+# Build brief — private, not for public repo
+Portfolio_Build_Brief.md
+
 # Temp / screenshot scripts (dev only)
 .dev-server.log
 .screenshot*.mjs
