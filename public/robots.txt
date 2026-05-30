@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolio-eight-eta-lke0tsoqtz.vercel.app/sitemap.xml
+Sitemap: https://shlok-sharma.vercel.app/sitemap.xml

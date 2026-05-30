@@ -2,7 +2,7 @@
 
 My personal portfolio. Dark, cinematic, built to be fast. Took the "just ship a template" route first — didn't like it, rebuilt it from scratch.
 
-Live: **[shloksharma.dev](https://claude-gray-three.vercel.app)**
+Live: **[shlok-sharma.vercel.app](https://shlok-sharma.vercel.app)**
 
 ---
 
