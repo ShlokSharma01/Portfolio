@@ -169,6 +169,21 @@ body::after {
 .section-glow-2 { animation: drift-2 22s ease-in-out infinite; }
 
 /* ============================================================
+   ACHIEVEMENTS — responsive stat number
+   letter-spacing is 0 on mobile (avoids digit collision),
+   tightened only once there's enough room at md+.
+   ============================================================ */
+.stat-number {
+  letter-spacing: 0;
+}
+@media (min-width: 768px) {
+  .stat-number {
+    letter-spacing: -0.035em;
+    line-height: 0.88;
+  }
+}
+
+/* ============================================================
    SKILLS — marquee for Tools row
    ============================================================ */
 @keyframes marquee-scroll {

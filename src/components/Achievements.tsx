@@ -109,7 +109,7 @@ export default function Achievements() {
         </h2>
 
         {/* ── HUGE stat counters ────────────────────────────────── */}
-        <div className="grid grid-cols-3 gap-4 md:gap-8 mb-16" data-achr>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mb-16" data-achr>
           {stats.map(({ value, suffix, label, href }) => (
             <div key={label} className="text-center relative py-6">
 
@@ -131,11 +131,10 @@ export default function Achievements() {
 
               {/* HUGE number */}
               <p
-                className="font-display font-bold relative"
+                className="font-display font-bold relative stat-number"
                 style={{
-                  fontSize:      'clamp(4rem, 11vw, 8rem)',
-                  lineHeight:    0.88,
-                  letterSpacing: '-0.035em',
+                  fontSize:      'clamp(3rem, 14vw, 8rem)',
+                  lineHeight:    1,
                   color:         'var(--text)',
                   textShadow:    '0 0 40px rgba(225,14,31,0.22)',
                 }}
